@@ -1,0 +1,6 @@
+D:\UnityRepository\Text Tiles\Data\DictionaryApplication\DictionaryApplication\bin\Debug\DictionaryApplication.exe.config
+D:\UnityRepository\Text Tiles\Data\DictionaryApplication\DictionaryApplication\bin\Debug\DictionaryApplication.exe
+D:\UnityRepository\Text Tiles\Data\DictionaryApplication\DictionaryApplication\bin\Debug\DictionaryApplication.pdb
+D:\UnityRepository\Text Tiles\Data\DictionaryApplication\DictionaryApplication\obj\Debug\DictionaryApplication.csprojResolveAssemblyReference.cache
+D:\UnityRepository\Text Tiles\Data\DictionaryApplication\DictionaryApplication\obj\Debug\DictionaryApplication.exe
+D:\UnityRepository\Text Tiles\Data\DictionaryApplication\DictionaryApplication\obj\Debug\DictionaryApplication.pdb
