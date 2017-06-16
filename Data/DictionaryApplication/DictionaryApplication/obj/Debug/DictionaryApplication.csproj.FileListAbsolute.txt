@@ -10,3 +10,5 @@ D:\UnityRepository\TextTiles\Data\DictionaryApplication\DictionaryApplication\ob
 D:\UnityRepository\TextTiles\Data\DictionaryApplication\DictionaryApplication\bin\Debug\DictionaryApplication.exe
 D:\UnityRepository\TextTiles\Data\DictionaryApplication\DictionaryApplication\bin\Debug\DictionaryApplication.pdb
 D:\UnityRepository\TextTiles\Data\DictionaryApplication\DictionaryApplication\obj\Debug\DictionaryApplication.csprojResolveAssemblyReference.cache
+D:\UnityRepository\TextTiles\Data\DictionaryApplication\DictionaryApplication\obj\Debug\DictionaryApplication.Properties.Resources.resources
+D:\UnityRepository\TextTiles\Data\DictionaryApplication\DictionaryApplication\obj\Debug\DictionaryApplication.csproj.GenerateResource.Cache

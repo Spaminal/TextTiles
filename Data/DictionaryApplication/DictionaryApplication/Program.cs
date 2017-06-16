@@ -1,78 +1,151 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 
 class Dictionary {
 
-	private static Dictionary<string, string> dict = new Dictionary<string, string>();
-	private static Dictionary<char, int> letters = new Dictionary<char, int>();
-	private static Dictionary<int, int> wordLength = new Dictionary<int, int>();
-	private static int maxWordLength = 15, totalLetters = 0;
+	private static List<string> wordList = new List<string>();
+	private static List<string> alphaList = new List<string>();
+	
+	static void Main(string[] args) {
 
-	// Fills dictionaries with unique words from external file
-	static void fillDictionaries() {
-		string line;
-		int keyVal;
-		System.IO.StreamReader file = new System.IO.StreamReader(
-			@"C:\Users\Spaminal\Desktop\WordList.txt");
-		while ((line = file.ReadLine()) != null) {
-			if (line.Length <= maxWordLength) {
-				dict.Add(line, line);
-				if (wordLength.ContainsKey(line.Length)) {
-					keyVal = wordLength[line.Length];
-					wordLength[line.Length] = keyVal + 1;
-				} else {
-					wordLength.Add(line.Length, 1);
+		List<string> parsedList = new List<string>();
+		initAlpha();
+		initWordList();
+		displayMenuOptions();
+
+		while (true) {
+			int length, count;
+			double freq;
+			char ch;
+			string line = Console.ReadLine();
+			if (line == "exit") {
+				break;
+			} else if (line == "1") {
+				printListInfo();
+			} else if (line == "2") {
+				Console.WriteLine("Enter word length: ");
+				length = int.Parse(Console.ReadLine());
+				parsedList = parseWordsByLength(length, parsedList);
+				Console.WriteLine("There are {0} words of length {1}", parsedList.Count, length);
+			} else if (line == "3") {
+				Console.WriteLine("Enter word Length: ");
+				length = int.Parse(Console.ReadLine());
+				//Console.WriteLine("Enter letter to filter by: ");
+				//ch = char.Parse(Console.ReadLine());
+				foreach (string word in alphaList) {
+					ch = char.Parse(word);
+					parsedList = parseWordsByLength(length, parsedList);
+					count = getWordsWithChar(ch, parsedList);
+					Console.WriteLine("There are {0} words that contain the letter {1}", count, ch);
 				}
-				foreach (char ch in line) {
-					if (letters.ContainsKey(ch)) {
-						keyVal = letters[ch];
-						letters[ch] = keyVal + 1;
-					} else {
-						letters.Add(ch, 1);
-					}
-					totalLetters++;
-				}
+			} else if (line == "4") {
+				Console.WriteLine("Enter letter: ");
+				ch = char.Parse(Console.ReadLine());
+				freq = getLetterFrequency(ch, wordList);
+				Console.WriteLine("Frequency of {0} in all words is: {1:0.00}%", ch, freq);
+			} else if(line == "5") {
+				Console.WriteLine("Enter letter: ");
+				ch = char.Parse(Console.ReadLine());
+				Console.WriteLine("Enter word length: ");
+				length = int.Parse(Console.ReadLine());
+				parsedList = parseWordsByLength(length, parsedList);
+				freq = getLetterFrequency(ch, parsedList);
+				Console.WriteLine("Frequency of {0} in words of length {1} is: {2:0.00}%", ch, length, freq);
 			}
+		}
+	}
+
+	// Populates wordList with complete list of English words
+	static void initWordList() {
+		string line;
+			System.IO.StreamReader file = new System.IO.StreamReader(@"D:\UnityRepository\TextTiles\Data\DictionaryApplication\DictionaryApplication\WordList.txt");
+		while ((line = file.ReadLine()) != null) {
+			wordList.Add(line);
 		}
 		file.Close();
 	}
 
-	static void dictInfo() {
-		Console.WriteLine("There are {0} Words", dict.Count);
-		Console.WriteLine("There are {0} total letters", totalLetters);
-		Console.WriteLine("The longest word is {0} letters long", maxWordLength);
-	}
-
-	static void letterFrequency() {
-		foreach (KeyValuePair<char, int> entry in letters) {
-			int keyValue = entry.Value;
-			Console.WriteLine("Frequenchy of '{0}':  {1:0.00}%", entry.Key, Convert.ToDouble(entry.Value) / totalLetters * 100);
+	// Populates list with words of length n
+	static List<string> parseWordsByLength(int length, List<string> list) {
+		list.Clear();
+		foreach (string word in wordList) {
+			if (word.Length == length) {
+				list.Add(word.ToLower());
+			}
 		}
+		return list;
 	}
 
-	static void wordCounts() {
-		var items = from entry in wordLength
-					orderby entry.Key ascending
-					select entry;
-		foreach (KeyValuePair<int, int> entry in wordLength) {
-			Console.WriteLine("There are {0} words of length {1}", entry.Value, entry.Key);
+	// Gets the number of words that contain the letter ch
+	static int getWordsWithChar(char ch, List<string> list) {
+		int count = 0;
+		foreach (string word in list) {
+			if (word.Contains(ch)) {
+				count++;
+			}
 		}
+		return count;
 	}
 
+	// Gets the frequency of the letter ch of the wordlist list
+	static double getLetterFrequency(char ch, List<string> list) {
+		double charCount = 0, totalLetters = 0;
+		foreach (string word in list) {
+			foreach (char letter in word) {
+				if (letter == ch) {
+					charCount++;
+				}
+				totalLetters++;
+			}
+		}
+		return charCount / totalLetters * 100;
+	}
 
+	static void printListInfo() {
+		Console.WriteLine("There are {0} words in the dictionary", wordList.Count);
+	}
 
+	static void displayMenuOptions() {
+		Console.WriteLine("Dictoinary Database for TextTiles\n");
+		Console.WriteLine("1) Get total word count");
+		Console.WriteLine("2) Get count of words of length 'n'");
+		Console.WriteLine("3) Get count of words of length n containing the letter 'ch'");
+		Console.WriteLine("4) Get total frequency of letter 'ch' in all words");
+		Console.WriteLine("5) Get frequency of letter 'ch' found in words of length 'n'");
+		Console.WriteLine("Type 'exit' to quit");
+	}
 
-	static void Main(string[] args) {
-
-		fillDictionaries();
-		dictInfo();
-		//letterFrequency();
-		wordCounts();
-
-		Console.ReadKey();
+	static void initAlpha() {
+		alphaList.Add("a");
+		alphaList.Add("b");
+		alphaList.Add("c");
+		alphaList.Add("d");
+		alphaList.Add("e");
+		alphaList.Add("f");
+		alphaList.Add("g");
+		alphaList.Add("h");
+		alphaList.Add("i");
+		alphaList.Add("j");
+		alphaList.Add("k");
+		alphaList.Add("l");
+		alphaList.Add("m");
+		alphaList.Add("n");
+		alphaList.Add("o");
+		alphaList.Add("p");
+		alphaList.Add("q");
+		alphaList.Add("r");
+		alphaList.Add("s");
+		alphaList.Add("t");
+		alphaList.Add("u");
+		alphaList.Add("v");
+		alphaList.Add("w");
+		alphaList.Add("x");
+		alphaList.Add("y");
+		alphaList.Add("z");
 	}
 }
